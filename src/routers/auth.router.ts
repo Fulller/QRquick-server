@@ -2,14 +2,17 @@ import { Router, query } from "express";
 import passport from "passport";
 import configs from "../configs";
 import _ from "lodash";
+import JWTService from "../services/jwt.service";
+import { profileAuthenticated } from "../middlewares";
 
 const authRouter = Router();
 
 const clientUrl: string = _.get(
   configs,
   "auth.clientUrl",
-  "http://localhost:3003"
+  "http://localhost:3000"
 );
+
 authRouter.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
@@ -19,8 +22,11 @@ authRouter.get(
   passport.authenticate("google", {
     failureRedirect: clientUrl + "/login",
   }),
-  (req: any, res) => {
-    res.redirect(clientUrl);
+  async (req, res) => {
+    const accessToken = await JWTService.access.sign(
+      _.pick(req.user, ["id", "displayName", "emails", "photos"])
+    );
+    res.redirect(`${clientUrl}/login?accesstoken=${accessToken}`);
   }
 );
 authRouter.get("/logout", (req: any, res, next) => {
@@ -31,19 +37,20 @@ authRouter.get("/logout", (req: any, res, next) => {
     res.redirect(clientUrl);
   });
 });
-authRouter.get("/user", (req, res: any) => {
-  if (req.isAuthenticated()) {
+authRouter.get("/profile", profileAuthenticated, async (req: any, res: any) => {
+  const profile = req.profile;
+  if (profile) {
     res.fly({
       status: 200,
       metadata: {
-        user: _.pick(req.user, ["id", "displayName", "emails", "photos"]),
+        profile: _.pick(profile, ["id", "displayName", "emails", "photos"]),
       },
     });
   } else {
     res.fly({
       status: 400,
       metadata: {
-        user: null,
+        profile: null,
       },
     });
   }

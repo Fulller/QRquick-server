@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
 import { responseDto } from "../dtos";
 import { getStatus } from "../utils";
+import { profileAuthenticated } from "../middlewares";
 import _ from "lodash";
 
 export function response(req: Request, res, next: NextFunction) {
@@ -22,8 +23,8 @@ export function notFound(req: Request, res) {
 export function handleError(err, req: Request, res, next: NextFunction) {
   res.fly({ status: err.status || 500, message: err.mesage });
 }
-export function createQRWithOwner(req: Request, res, next) {
-  const user = req.user;
+export function createQRWithOwner(req: any, res, next) {
+  const user = req.profile;
   if (!!user) {
     req.body.ownerId = _.get(user, "id", null);
   }

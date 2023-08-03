@@ -73,7 +73,7 @@ export default {
     next: NextFunction
   ) => {
     try {
-      const ownerId = _.get(req, "user.id");
+      const ownerId = _.get(req, "profile.id");
       if (!ownerId) {
         return res.fly({ status: 403 });
       }

@@ -5,16 +5,6 @@ import _ from "lodash";
 
 const google = _.get(configs, "auth.google");
 
-passport.serializeUser((user, done) => {
-  // You can customize the user serialization logic
-  done(null, user);
-});
-
-passport.deserializeUser((user: any, done) => {
-  // You can customize the user deserialization logic
-  done(null, user);
-});
-
 passport.use(
   new GoogleStrategy(
     {
@@ -27,3 +17,12 @@ passport.use(
     }
   )
 );
+passport.serializeUser((user, done) => {
+  // You can customize the user serialization logic
+  done(null, user);
+});
+
+passport.deserializeUser((user: any, done) => {
+  // You can customize the user deserialization logic
+  done(null, user);
+});
