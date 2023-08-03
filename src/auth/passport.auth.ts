@@ -7,6 +7,8 @@ import _ from "lodash";
 
 const google = _.get(configs, "auth.google");
 
+console.log({ configs });
+
 passport.serializeUser((user, done) => {
   // You can customize the user serialization logic
   done(null, user);
