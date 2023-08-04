@@ -21,7 +21,7 @@ import "./auth/passport.auth";
 const app = express();
 
 // Use middlewares
-
+console.log({ cors: _.get(configs, "auth.clientUrl") });
 app.use(cors({ origin: _.get(configs, "auth.clientUrl"), credentials: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
