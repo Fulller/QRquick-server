@@ -20,6 +20,8 @@ authRouter.get(
     failureRedirect: clientUrl + "/login",
   }),
   (req: any, res) => {
+    res.setHeader("Access-Control-Allow-Origin", clientUrl);
+    res.setHeader("Access-Control-Allow-Credentials", "true");
     res.redirect(clientUrl);
   }
 );
