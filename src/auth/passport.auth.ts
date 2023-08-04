@@ -1,5 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import configs from "../configs";
@@ -8,6 +6,7 @@ import _ from "lodash";
 const google = _.get(configs, "auth.google");
 
 console.log({ configs });
+console.log({ google: configs?.auth.google });
 
 passport.serializeUser((user, done) => {
   // You can customize the user serialization logic
