@@ -4,6 +4,11 @@ import configs from "../configs";
 import _ from "lodash";
 
 const google = _.get(configs, "auth.google");
+const clientUrl: string = _.get(
+  configs,
+  "auth.clientUrl",
+  "http://localhost:3000"
+);
 
 passport.serializeUser((user, done) => {
   // You can customize the user serialization logic
@@ -20,7 +25,7 @@ passport.use(
     {
       clientID: _.get(google, "clientID", ""),
       clientSecret: _.get(google, "clientSecret", ""),
-      callbackURL: "/auth/google/callback",
+      callbackURL: clientUrl,
     },
     (accessToken, refreshToken, profile, done) => {
       return done(null, profile);

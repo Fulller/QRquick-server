@@ -8,7 +8,7 @@ const authRouter = Router();
 const clientUrl: string = _.get(
   configs,
   "auth.clientUrl",
-  "http://localhost:3003"
+  "http://localhost:3000"
 );
 authRouter.get(
   "/auth/google",
