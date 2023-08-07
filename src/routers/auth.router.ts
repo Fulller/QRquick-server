@@ -39,8 +39,8 @@ authRouter.get("/logout", (req: any, res, next) => {
 authRouter.get("/user", async (req, res: any) => {
   try {
     const accessToken = req.cookies.accessToken;
+    console.log({ accessToken: accessToken });
     const user = await JWTService.access.verify(accessToken);
-    console.log({ accessToken: accessToken, user: user });
     res.fly({
       status: 200,
       metadata: {
