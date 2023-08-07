@@ -13,13 +13,21 @@ const REFRESH_SECRECT_KEY: string = _.get(
   "jwt.REFRESH_SECRECT_KEY",
   "refresh"
 );
+const ACCESS_EX: number = _.chain(configs)
+  .get("jwt.ACCESS_EX", "60")
+  .toNumber()
+  .value();
+const REFRESH_EX: number = _.chain(configs)
+  .get("jwt.REFRESH_EX", "120")
+  .toNumber()
+  .value();
 
 const JWTService = {
   access: {
     sign: (payload: any): string => {
       try {
         return jwt.sign(payload, ACCESS_SECRECT_KEY, {
-          expiresIn: 60,
+          expiresIn: ACCESS_EX,
           algorithm: "HS256",
         });
       } catch {
@@ -38,7 +46,7 @@ const JWTService = {
     sign: (payload: any): string => {
       try {
         return jwt.sign(payload, REFRESH_SECRECT_KEY, {
-          expiresIn: 60 * 5,
+          expiresIn: REFRESH_EX,
           algorithm: "HS256",
         });
       } catch {

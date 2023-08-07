@@ -22,6 +22,8 @@ interface Config {
   jwt: {
     ACCESS_SECRECT_KEY: string | undefined;
     REFRESH_SECRECT_KEY: string | undefined;
+    ACCESS_EX: string | undefined;
+    REFRESH_EX: string | undefined;
   };
 }
 const DEV_CONFIG: Config = {
@@ -43,6 +45,8 @@ const DEV_CONFIG: Config = {
   jwt: {
     ACCESS_SECRECT_KEY: _.get(process.env, "DEV_JWT_ACCESS_SECRECT_KEY"),
     REFRESH_SECRECT_KEY: _.get(process.env, "DEV_JWT_REFRESH_SECRECT_KEY"),
+    ACCESS_EX: _.get(process.env, "DEV_JWT_ACCESS_EX"),
+    REFRESH_EX: _.get(process.env, "DEV_JWT_REFRESH_EX"),
   },
 };
 const PRO_CONFIG: Config = {
@@ -64,6 +68,8 @@ const PRO_CONFIG: Config = {
   jwt: {
     ACCESS_SECRECT_KEY: _.get(process.env, "PRO_JWT_ACCESS_SECRECT_KEY"),
     REFRESH_SECRECT_KEY: _.get(process.env, "PRO_JWT_REFRESH_SECRECT_KEY"),
+    ACCESS_EX: _.get(process.env, "PRO_JWT_ACCESS_EX"),
+    REFRESH_EX: _.get(process.env, "PRO_JWT_REFRESH_EX"),
   },
 };
 const envName: string = _.toUpper(_.get(process.env, "NODE_ENV", "DEV"));

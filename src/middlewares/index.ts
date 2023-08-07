@@ -1,4 +1,4 @@
-export { ensureAuthenticated } from "./auth.middleware";
+export { ensureAuthenticated, profileAuthenticated } from "./auth.middleware";
 export {
   handleError,
   response,

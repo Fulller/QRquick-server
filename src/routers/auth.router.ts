@@ -3,6 +3,7 @@ import passport from "passport";
 import configs from "../configs";
 import _ from "lodash";
 import JWTService from "../services/jwt.service";
+import { profileAuthenticated } from "../middlewares";
 
 const authRouter = Router();
 
@@ -36,21 +37,20 @@ authRouter.get("/logout", (req: any, res, next) => {
     res.redirect(clientUrl);
   });
 });
-authRouter.get("/user", async (req, res: any) => {
-  try {
-    const accessToken: string = req.headers["accesstoken"]?.toString() || "";
-    const user = await JWTService.access.verify(accessToken);
+authRouter.get("/profile", profileAuthenticated, async (req: any, res: any) => {
+  const profile = req.profile;
+  if (profile) {
     res.fly({
       status: 200,
       metadata: {
-        user: _.pick(user, ["id", "displayName", "emails", "photos"]),
+        profile: _.pick(profile, ["id", "displayName", "emails", "photos"]),
       },
     });
-  } catch {
+  } else {
     res.fly({
       status: 400,
       metadata: {
-        user: null,
+        profile: null,
       },
     });
   }
