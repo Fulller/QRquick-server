@@ -19,6 +19,10 @@ interface Config {
     };
     clientUrl: string | undefined;
   };
+  jwt: {
+    ACCESS_SECRECT_KEY: string | undefined;
+    REFRESH_SECRECT_KEY: string | undefined;
+  };
 }
 const DEV_CONFIG: Config = {
   app: {
@@ -36,6 +40,10 @@ const DEV_CONFIG: Config = {
     },
     clientUrl: _.get(process.env, "DEV_AUTH_CLIENTURL"),
   },
+  jwt: {
+    ACCESS_SECRECT_KEY: _.get(process.env, "DEV_JWT_ACCESS_SECRECT_KEY"),
+    REFRESH_SECRECT_KEY: _.get(process.env, "DEV_JWT_REFRESH_SECRECT_KEY"),
+  },
 };
 const PRO_CONFIG: Config = {
   app: {
@@ -52,6 +60,10 @@ const PRO_CONFIG: Config = {
       clientSecret: _.get(process.env, "PRO_AUTH_GOOGLE_CLIENTSECRET"),
     },
     clientUrl: _.get(process.env, "PRO_AUTH_CLIENTURL"),
+  },
+  jwt: {
+    ACCESS_SECRECT_KEY: _.get(process.env, "PRO_JWT_ACCESS_SECRECT_KEY"),
+    REFRESH_SECRECT_KEY: _.get(process.env, "PRO_JWT_REFRESH_SECRECT_KEY"),
   },
 };
 const envName: string = _.toUpper(_.get(process.env, "NODE_ENV", "DEV"));

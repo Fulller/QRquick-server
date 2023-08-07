@@ -2,6 +2,7 @@ import { Router, query } from "express";
 import passport from "passport";
 import configs from "../configs";
 import _ from "lodash";
+import JWTService from "../services/jwt.service";
 
 const authRouter = Router();
 
@@ -10,6 +11,7 @@ const clientUrl: string = _.get(
   "auth.clientUrl",
   "http://localhost:3000"
 );
+
 authRouter.get(
   "/auth/google",
   passport.authenticate("google", { scope: ["profile", "email"] })
@@ -17,14 +19,14 @@ authRouter.get(
 authRouter.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    successRedirect: clientUrl,
     failureRedirect: clientUrl + "/login",
-  })
-  // (req: any, res) => {
-  //   res.setHeader("Access-Control-Allow-Origin", clientUrl);
-  //   res.setHeader("Access-Control-Allow-Credentials", "true");
-  //   res.redirect(clientUrl);
-  // }
+  }),
+  async (req, res) => {
+    const accessToken = await JWTService.access.sign(
+      _.pick(req.user, ["id", "displayName", "emails", "photos"])
+    );
+    res.redirect(`${clientUrl}/login?accessToken=${accessToken}`);
+  }
 );
 authRouter.get("/logout", (req: any, res, next) => {
   req.logout(function (err) {
@@ -34,15 +36,17 @@ authRouter.get("/logout", (req: any, res, next) => {
     res.redirect(clientUrl);
   });
 });
-authRouter.get("/user", (req, res: any) => {
-  if (req.isAuthenticated()) {
+authRouter.get("/user", async (req, res: any) => {
+  try {
+    const accessToken = req.cookies.accessToken;
+    const user = await JWTService.access.verify(accessToken);
     res.fly({
       status: 200,
       metadata: {
-        user: _.pick(req.user, ["id", "displayName", "emails", "photos"]),
+        user: _.pick(user, ["id", "displayName", "emails", "photos"]),
       },
     });
-  } else {
+  } catch {
     res.fly({
       status: 400,
       metadata: {
