@@ -25,7 +25,7 @@ authRouter.get(
     const accessToken = await JWTService.access.sign(
       _.pick(req.user, ["id", "displayName", "emails", "photos"])
     );
-    res.redirect(`${clientUrl}/login?accessToken=${accessToken}`);
+    res.redirect(`${clientUrl}/login?accesstoken=${accessToken}`);
   }
 );
 authRouter.get("/logout", (req: any, res, next) => {
@@ -38,8 +38,7 @@ authRouter.get("/logout", (req: any, res, next) => {
 });
 authRouter.get("/user", async (req, res: any) => {
   try {
-    const accessToken = req.cookies.accessToken;
-    console.log({ accessToken: accessToken });
+    const accessToken: string = req.headers["accesstoken"]?.toString() || "";
     const user = await JWTService.access.verify(accessToken);
     res.fly({
       status: 200,

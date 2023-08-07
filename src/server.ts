@@ -15,7 +15,6 @@ import configs from "./configs";
 import passport from "passport";
 import session from "express-session";
 import cors from "cors";
-import cookieParser from "cookie-parser";
 import "./auth/passport.auth";
 // Init app
 
@@ -23,7 +22,6 @@ const app = express();
 
 // Use middlewares
 app.use(cors({ origin: _.get(configs, "auth.clientUrl"), credentials: true }));
-app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(morgan("dev"));
