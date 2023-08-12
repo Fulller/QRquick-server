@@ -16,6 +16,7 @@ import passport from "passport";
 import session from "express-session";
 import cors from "cors";
 import "./auth/passport.auth";
+import "./helpers/scheduler";
 // Init app
 
 const app = express();

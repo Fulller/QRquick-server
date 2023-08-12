@@ -1,4 +1,3 @@
-// Config enviroment variable
 import dotenv from "dotenv";
 import _ from "lodash";
 dotenv.config();
@@ -8,6 +7,7 @@ interface Config {
     port: number | undefined;
     sessionSecret: string | undefined;
     apiVersion: number | undefined;
+    serverUrl: string | undefined;
   };
   db: {
     url: string | undefined;
@@ -31,6 +31,7 @@ const DEV_CONFIG: Config = {
     port: _.chain(process.env).get("DEV_APP_PORT").toNumber().value(),
     sessionSecret: _.get(process.env, "DEV_APP_SESSTIONSECRET"),
     apiVersion: _.chain(process.env).get("DEV_API_VERSION").toNumber().value(),
+    serverUrl: _.get(process.env, "DEV_APP_SERVERURL"),
   },
   db: {
     url: _.get(process.env, "DEV_DB_URL"),
@@ -54,6 +55,7 @@ const PRO_CONFIG: Config = {
     port: _.chain(process.env).get("PRO_APP_PORT").toNumber().value(),
     sessionSecret: _.get(process.env, "PRO_APP_SESSTIONSECRET"),
     apiVersion: _.chain(process.env).get("PRO_API_VERSION").toNumber().value(),
+    serverUrl: _.get(process.env, "PRO_APP_SERVERURL"),
   },
   db: {
     url: _.get(process.env, "PRO_DB_URL"),
