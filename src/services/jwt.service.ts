@@ -69,18 +69,11 @@ const JWTService = {
     if (!validRefreshToken) {
       throw createHttpError(403, "RefreshToken invalid");
     }
-    const accessToken = JWTService.access.sign(
-      _.pick(validRefreshToken, ["id", "email"])
-    );
+    const accessToken = JWTService.access.sign(validRefreshToken);
     if (!accessToken) {
       throw createHttpError(400, "Can not create access token");
     }
-    return {
-      status: 200,
-      metadata: {
-        accessToken,
-      },
-    };
+    return accessToken;
   },
 };
 

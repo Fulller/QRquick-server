@@ -37,6 +37,17 @@ export default {
     try {
       const id = _.get(req, "params.id");
       const qrCode = await QrcodeService.getQrcodeAndCustomById(id);
+      const ownerIdBody: string | null = _.get(req, "body.ownerId", null);
+      const ownerIdQr: string | null = _.get(qrCode, "ownerId", null);
+
+      if (
+        (ownerIdQr && !ownerIdBody) ||
+        (ownerIdQr && ownerIdBody !== ownerIdQr)
+      ) {
+        return res.fly({
+          status: 403,
+        });
+      }
       res.fly({
         status: 200,
         metadata: qrCode,
@@ -73,7 +84,7 @@ export default {
     next: NextFunction
   ) => {
     try {
-      const ownerId = _.get(req, "profile.id");
+      const ownerId = _.get(req, "body.ownerId");
       if (!ownerId) {
         return res.fly({ status: 403 });
       }

@@ -8,6 +8,7 @@ interface Config {
     sessionSecret: string | undefined;
     apiVersion: number | undefined;
     serverUrl: string | undefined;
+    alwaysLive: number | undefined;
   };
   db: {
     url: string | undefined;
@@ -32,6 +33,10 @@ const DEV_CONFIG: Config = {
     sessionSecret: _.get(process.env, "DEV_APP_SESSTIONSECRET"),
     apiVersion: _.chain(process.env).get("DEV_API_VERSION").toNumber().value(),
     serverUrl: _.get(process.env, "DEV_APP_SERVERURL"),
+    alwaysLive: _.chain(process.env)
+      .get("DEV_APP_ALWAYSLIVE")
+      .toNumber()
+      .value(),
   },
   db: {
     url: _.get(process.env, "DEV_DB_URL"),
@@ -56,6 +61,10 @@ const PRO_CONFIG: Config = {
     sessionSecret: _.get(process.env, "PRO_APP_SESSTIONSECRET"),
     apiVersion: _.chain(process.env).get("PRO_API_VERSION").toNumber().value(),
     serverUrl: _.get(process.env, "PRO_APP_SERVERURL"),
+    alwaysLive: _.chain(process.env)
+      .get("PRO_APP_ALWAYSLIVE")
+      .toNumber()
+      .value(),
   },
   db: {
     url: _.get(process.env, "PRO_DB_URL"),

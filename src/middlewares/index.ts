@@ -3,5 +3,5 @@ export {
   handleError,
   response,
   notFound,
-  createQRWithOwner,
+  bodyWithOwner,
 } from "./api.middleware";

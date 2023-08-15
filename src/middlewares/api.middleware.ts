@@ -23,7 +23,7 @@ export function notFound(req: Request, res) {
 export function handleError(err, req: Request, res, next: NextFunction) {
   res.fly({ status: err.status || 500, message: err.mesage });
 }
-export function createQRWithOwner(req: any, res, next) {
+export function bodyWithOwner(req: any, res, next) {
   const user = req.profile;
   if (!!user) {
     req.body.ownerId = _.get(user, "id", null);

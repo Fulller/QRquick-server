@@ -6,11 +6,11 @@ export async function ensureAuthenticated(req, res, next) {
     await JWTService.access.verify(accessToken);
     return next();
   } catch {
-    res.redirect("/auth/google");
+    res.fly({ status: 403 });
   }
 }
 export async function profileAuthenticated(req, res, next) {
-  let profile = null;
+  let profile: any = null;
   try {
     const accessToken: string = req.headers["accesstoken"]?.toString() || "";
     profile = await JWTService.access.verify(accessToken);
