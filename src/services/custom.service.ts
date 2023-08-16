@@ -15,7 +15,6 @@ export default {
   edit: async (customData: any) => {
     try {
       const custom = await Custom.findById(_.get(customData, "_id", ""));
-      console.log({ custom });
       if (!custom) {
         throw createHttpError(404);
       }
@@ -24,7 +23,6 @@ export default {
       );
       _.merge(custom, validEditFields);
       const editedCustom = await custom.save();
-      console.log({ editedCustom });
       return editedCustom;
     } catch (error: any) {
       throw createHttpError(error);

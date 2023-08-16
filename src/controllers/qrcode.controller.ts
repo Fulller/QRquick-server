@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import QrcodeService from "../services/qrcode.service";
+import { qrcodeService, customService } from "../services";
 import _ from "lodash";
 import { ContentTypeEnum } from "../constants/contentType.const";
 import { apiVersion } from "../constants/api.const";
@@ -24,19 +24,19 @@ export default {
         }
         qrcodeData = _.set(qrcodeData, "data", file);
       }
-      const newQRcode = await QrcodeService.create(qrcodeData);
+      const newQRcode = await qrcodeService.create(qrcodeData);
       res.fly({
         status: 201,
         metadata: newQRcode,
       });
-    } catch (err) {
-      res.fly({ status: 400 });
+    } catch (err: any) {
+      res.fly({ status: err.status });
     }
   },
   getQrcodeAndCustomById: async (req: any, res: any, next: NextFunction) => {
     try {
       const id = _.get(req, "params.id");
-      const qrCode = await QrcodeService.getQrcodeAndCustomById(id);
+      const qrCode = await qrcodeService.getQrcodeAndCustomById(id);
       const ownerIdBody: string | null = _.get(req, "body.ownerId", null);
       const ownerIdQr: string | null = _.get(qrCode, "ownerId", null);
 
@@ -53,13 +53,13 @@ export default {
         metadata: qrCode,
       });
     } catch (err: any) {
-      res.fly({ status: 404 });
+      res.fly({ status: err.status });
     }
   },
   getById: async (req: any, res: any, next: NextFunction) => {
     try {
       const id = _.get(req, "params.id");
-      const qrCode = await QrcodeService.getById(id);
+      const qrCode = await qrcodeService.getById(id);
       let redirect: string = "/";
       switch (qrCode.contentType) {
         case ContentTypeEnum.LINK: {
@@ -75,7 +75,7 @@ export default {
       }
       res.redirect(redirect);
     } catch (err: any) {
-      res.fly({ status: 404 });
+      res.fly({ status: err.status });
     }
   },
   getQrcodeAndCustomByOwnerId: async (
@@ -88,22 +88,31 @@ export default {
       if (!ownerId) {
         return res.fly({ status: 403 });
       }
-      const qrCodes = await QrcodeService.getQrcodeAndCustomByOwnerId(ownerId);
+      const qrCodes = await qrcodeService.getQrcodeAndCustomByOwnerId(ownerId);
       res.fly({
         status: 200,
         metadata: qrCodes,
       });
     } catch (err: any) {
-      res.fly({ status: 404 });
+      res.fly({ status: err.status });
     }
   },
   deleteById: async (req: any, res: any, next: NextFunction) => {
     try {
       const id = _.get(req, "params.id");
-      await QrcodeService.deleteById(id);
+      await qrcodeService.deleteById(id);
       res.fly({ status: 200 });
     } catch (err: any) {
       res.fly({ status: 400 });
+    }
+  },
+  editCustom: async (req: any, res: any, next: NextFunction) => {
+    try {
+      const customData = _.get(req, "body.customData");
+      await customService.edit(customData);
+      res.fly({ status: 200 });
+    } catch (err: any) {
+      res.fly({ status: err.status });
     }
   },
 };

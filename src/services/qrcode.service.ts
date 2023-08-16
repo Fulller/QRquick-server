@@ -14,12 +14,13 @@ export default {
       qrCodeData = _.chain(qrCodeData)
         .set("custom", newCustom._id)
         .set("content", newContent._id)
+        .set("name", qrCodeData.name === "null" ? "QR code" : qrCodeData.name)
         .pick(["name", "contentType", "content", "custom", "ownerId"])
         .value();
       const savedQRCode = await QRCode.create(qrCodeData);
       return savedQRCode;
     } catch (error: any) {
-      throw createHttpError(400);
+      throw createHttpError(error);
     }
   },
   getQrcodeAndCustomById: async (id) => {

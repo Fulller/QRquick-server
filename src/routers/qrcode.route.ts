@@ -30,5 +30,6 @@ qrCodeRouter.post(
   qrcodeController.create
 );
 qrCodeRouter.delete("/:id", qrcodeController.deleteById);
+qrCodeRouter.put("/", qrcodeController.editCustom);
 
 export { qrCodeRouter };
