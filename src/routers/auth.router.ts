@@ -4,6 +4,7 @@ import configs from "../configs";
 import _ from "lodash";
 import JWTService from "../services/jwt.service";
 import { profileAuthenticated } from "../middlewares";
+import { authController } from "../controllers";
 
 const authRouter = Router();
 
@@ -22,38 +23,10 @@ authRouter.get(
   passport.authenticate("google", {
     failureRedirect: clientUrl + "/login",
   }),
-  async (req, res) => {
-    const accessToken = await JWTService.access.sign(
-      _.pick(req.user, ["id", "displayName", "emails", "photos"])
-    );
-    res.redirect(`${clientUrl}/login?accesstoken=${accessToken}`);
-  }
+  authController.googleCallBack
 );
-authRouter.get("/logout", (req: any, res, next) => {
-  req.logout(function (err) {
-    if (err) {
-      return next(err);
-    }
-    res.redirect(clientUrl);
-  });
-});
-authRouter.get("/profile", profileAuthenticated, async (req: any, res: any) => {
-  const profile = req.profile;
-  if (profile) {
-    res.fly({
-      status: 200,
-      metadata: {
-        profile: _.pick(profile, ["id", "displayName", "emails", "photos"]),
-      },
-    });
-  } else {
-    res.fly({
-      status: 400,
-      metadata: {
-        profile: null,
-      },
-    });
-  }
-});
+authRouter.get("/logout", profileAuthenticated, authController.logOut);
+authRouter.get("/profile", profileAuthenticated, authController.profile);
+authRouter.get("/refreshtoken", authController.refreshToken);
 
 export { authRouter };
