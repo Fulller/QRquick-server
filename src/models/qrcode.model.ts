@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { ContentTypes } from "../constants/contentType.const";
 
 const qrCodeSchema = new mongoose.Schema({
   name: {
@@ -8,7 +7,6 @@ const qrCodeSchema = new mongoose.Schema({
   },
   contentType: {
     type: String,
-    enum: ContentTypes,
     required: true,
   },
   content: {

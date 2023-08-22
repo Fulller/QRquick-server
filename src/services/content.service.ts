@@ -9,11 +9,6 @@ export default {
       const { contentType, data } = contentData;
       let content;
       switch (contentType) {
-        case ContentTypeEnum.LINK:
-        case ContentTypeEnum.WIFI: {
-          content = await Content.create({ data });
-          break;
-        }
         case ContentTypeEnum.IMAGE:
         case ContentTypeEnum.AUDIO:
         case ContentTypeEnum.PDF: {
@@ -21,6 +16,10 @@ export default {
             dataFile: data.buffer,
             detail: _.omit(data, ["buffer"]),
           });
+          break;
+        }
+        default: {
+          content = await Content.create({ data });
           break;
         }
       }

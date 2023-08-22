@@ -4,6 +4,7 @@ export enum ContentTypeEnum {
   AUDIO = "audio",
   PDF = "pdf",
   WIFI = "wifi",
+  PHONE = "phone",
 }
 export const ContentTypes: string[] = [
   ContentTypeEnum.LINK,
