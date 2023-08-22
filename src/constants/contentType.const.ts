@@ -1,7 +1,14 @@
-export const ContentTypes: string[] = ["Link", "Image", "Audio", "PDF"];
 export enum ContentTypeEnum {
-  LINK = "Link",
-  IMAGE = "Image",
-  AUDIO = "Audio",
-  PDF = "PDF",
+  LINK = "link",
+  IMAGE = "image",
+  AUDIO = "audio",
+  PDF = "pdf",
+  WIFI = "wifi",
 }
+export const ContentTypes: string[] = [
+  ContentTypeEnum.LINK,
+  ContentTypeEnum.IMAGE,
+  ContentTypeEnum.AUDIO,
+  ContentTypeEnum.PDF,
+  ContentTypeEnum.WIFI,
+];

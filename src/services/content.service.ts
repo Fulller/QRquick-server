@@ -9,7 +9,8 @@ export default {
       const { contentType, data } = contentData;
       let content;
       switch (contentType) {
-        case ContentTypeEnum.LINK: {
+        case ContentTypeEnum.LINK:
+        case ContentTypeEnum.WIFI: {
           content = await Content.create({ data });
           break;
         }

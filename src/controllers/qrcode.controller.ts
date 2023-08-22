@@ -14,6 +14,7 @@ export default {
         "data",
         "ownerId",
       ]);
+
       if (!!file) {
         const size = file.size;
         if (size > 1024 * 1024 * 10) {
@@ -23,6 +24,8 @@ export default {
           });
         }
         qrcodeData = _.set(qrcodeData, "data", file);
+      } else {
+        qrcodeData.data = JSON.parse(qrcodeData.data);
       }
       const newQRcode = await qrcodeService.create(qrcodeData);
       res.fly({
@@ -60,10 +63,10 @@ export default {
     try {
       const id = _.get(req, "params.id");
       const qrCode = await qrcodeService.getById(id);
-      let redirect: string = "/";
+      let redirect: string = "/ping";
       switch (qrCode.contentType) {
         case ContentTypeEnum.LINK: {
-          redirect = _.get(qrCode, "content.data", "/");
+          redirect = _.get(qrCode, "content.data.link", "/");
           break;
         }
         case ContentTypeEnum.AUDIO:
@@ -71,6 +74,9 @@ export default {
         case ContentTypeEnum.PDF: {
           redirect = `${apiVersion}/content/file/${qrCode.content}`;
           break;
+        }
+        default: {
+          return res.fly({ status: 404, message: "Not found content" });
         }
       }
       res.redirect(redirect);

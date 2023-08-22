@@ -3,6 +3,7 @@ import { customService, contentService } from "./index";
 import _ from "lodash";
 import createHttpError from "http-errors";
 import { ContentTypeEnum } from "../constants/contentType.const";
+import { isLeftHandSideExpression } from "typescript";
 
 export default {
   create: async (qrCodeData) => {
@@ -25,9 +26,12 @@ export default {
   },
   getQrcodeAndCustomById: async (id) => {
     try {
-      const qrCode = await QRCode.findOne({ _id: id, deleted: false }).populate(
+      let qrCode = await QRCode.findOne({ _id: id, deleted: false }).populate(
         "custom"
       );
+      if (qrCode && _.get(qrCode, "contentType") === "wifi") {
+        qrCode = await qrCode.populate("content");
+      }
       if (!qrCode) {
         throw createHttpError(404);
       }
