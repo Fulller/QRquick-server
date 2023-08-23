@@ -39,4 +39,15 @@ export default {
       throw createHttpError(400);
     }
   },
+  getText: async (id) => {
+    try {
+      const textContent = await Content.findById(id);
+      if (!textContent) {
+        throw createHttpError(404);
+      }
+      return textContent;
+    } catch {
+      throw createHttpError(400);
+    }
+  },
 };

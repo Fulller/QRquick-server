@@ -5,5 +5,6 @@ import { contentController } from "../controllers";
 
 const contentRouter: Router = Router();
 contentRouter.get("/file/:id", contentController.getFile);
+contentRouter.get("/text/:id", contentController.getText);
 
 export { contentRouter };

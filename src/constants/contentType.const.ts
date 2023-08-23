@@ -5,11 +5,9 @@ export enum ContentTypeEnum {
   PDF = "pdf",
   WIFI = "wifi",
   PHONE = "phone",
+  TEXT = "text",
 }
-export const ContentTypes: string[] = [
-  ContentTypeEnum.LINK,
-  ContentTypeEnum.IMAGE,
-  ContentTypeEnum.AUDIO,
-  ContentTypeEnum.PDF,
+export const ContentPopulate: string[] = [
   ContentTypeEnum.WIFI,
+  ContentTypeEnum.PHONE,
 ];

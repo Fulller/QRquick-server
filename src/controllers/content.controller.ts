@@ -13,4 +13,13 @@ export default {
       res.fly({ status: 404, message: "Not found file" });
     }
   },
+  getText: async (req: any, res: any, next: NextFunction) => {
+    try {
+      const id = _.get(req, "params.id");
+      let { data } = await ContentService.getText(id);
+      res.fly({ status: 200, metadata: data.textEditor });
+    } catch (err) {
+      res.fly({ status: 404, message: "Not found file" });
+    }
+  },
 };

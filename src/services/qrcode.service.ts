@@ -2,7 +2,10 @@ import { QRCode } from "../models";
 import { customService, contentService } from "./index";
 import _ from "lodash";
 import createHttpError from "http-errors";
-import { ContentTypeEnum } from "../constants/contentType.const";
+import {
+  ContentTypeEnum,
+  ContentPopulate,
+} from "../constants/contentType.const";
 
 export default {
   create: async (qrCodeData) => {
@@ -28,13 +31,7 @@ export default {
       let qrCode = await QRCode.findOne({ _id: id, deleted: false }).populate(
         "custom"
       );
-      if (
-        qrCode &&
-        _.includes(
-          [ContentTypeEnum.WIFI, ContentTypeEnum.PHONE],
-          _.get(qrCode, "contentType")
-        )
-      ) {
+      if (qrCode && _.includes(ContentPopulate, _.get(qrCode, "contentType"))) {
         qrCode = await qrCode.populate("content");
       }
       if (!qrCode) {
@@ -66,9 +63,15 @@ export default {
   },
   getQrcodeAndCustomByOwnerId: async (ownerId) => {
     try {
-      const qrCodes = await QRCode.find({ ownerId, deleted: false }).populate(
-        "custom"
-      );
+      const qrCodes = await QRCode.find({
+        ownerId,
+        deleted: false,
+      }).populate("custom");
+      for (const qrCode of qrCodes) {
+        if (_.includes(ContentPopulate, _.get(qrCode, "contentType"))) {
+          await qrCode.populate("content");
+        }
+      }
       if (!qrCodes) {
         throw createHttpError(404);
       }

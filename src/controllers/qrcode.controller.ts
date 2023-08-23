@@ -3,6 +3,9 @@ import { qrcodeService, customService } from "../services";
 import _ from "lodash";
 import { ContentTypeEnum } from "../constants/contentType.const";
 import { apiVersion } from "../constants/api.const";
+import configs from "../configs";
+
+const clientUrl: string = _.get(configs, "auth.clientUrl", "/");
 
 export default {
   create: async (req: any, res: any, next: NextFunction) => {
@@ -14,7 +17,6 @@ export default {
         "data",
         "ownerId",
       ]);
-
       if (!!file) {
         const size = file.size;
         if (size > 1024 * 1024 * 10) {
@@ -73,6 +75,10 @@ export default {
         case ContentTypeEnum.IMAGE:
         case ContentTypeEnum.PDF: {
           redirect = `${apiVersion}/content/file/${qrCode.content}`;
+          break;
+        }
+        case ContentTypeEnum.TEXT: {
+          redirect = `${clientUrl}/content/text/${qrCode.content}`;
           break;
         }
         default: {
