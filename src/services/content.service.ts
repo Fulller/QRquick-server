@@ -11,7 +11,8 @@ export default {
       switch (contentType) {
         case ContentTypeEnum.IMAGE:
         case ContentTypeEnum.AUDIO:
-        case ContentTypeEnum.PDF: {
+        case ContentTypeEnum.PDF:
+        case ContentTypeEnum.FILE: {
           content = await Content.create({
             dataFile: data.buffer,
             detail: _.omit(data, ["buffer"]),

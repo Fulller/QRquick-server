@@ -6,6 +6,7 @@ export enum ContentTypeEnum {
   WIFI = "wifi",
   PHONE = "phone",
   TEXT = "text",
+  FILE = "file",
 }
 export const ContentPopulate: string[] = [
   ContentTypeEnum.WIFI,

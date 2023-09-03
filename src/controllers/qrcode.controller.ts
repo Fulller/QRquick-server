@@ -73,7 +73,8 @@ export default {
         }
         case ContentTypeEnum.AUDIO:
         case ContentTypeEnum.IMAGE:
-        case ContentTypeEnum.PDF: {
+        case ContentTypeEnum.PDF:
+        case ContentTypeEnum.FILE: {
           redirect = `${apiVersion}/content/file/${qrCode.content}`;
           break;
         }
