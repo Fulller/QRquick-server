@@ -11,9 +11,9 @@ const alwaysLive: number = _.get(configs, "app.alwaysLive", 0);
     return;
   }
   console.log("Turn ON always live mode");
+  const serverUrl: string = _.get(configs, "app.serverUrl", "");
   schedule.scheduleJob("* * * * *", async () => {
     try {
-      const serverUrl: string = _.get(configs, "app.serverUrl", "");
       const response = await axios.get(`${serverUrl}/ping`);
       console.log(`Scheduled request sent: ${response.status}`);
     } catch (error) {

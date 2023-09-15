@@ -17,6 +17,9 @@ export default {
       _.pick(req.user, ["id", "displayName", "emails", "photos"]),
       _.get(req.user, "id", "")
     );
+    console.log({
+      clientUrl: `${clientUrl}/login?accesstoken=${accessToken}&refreshtoken=${refreshToken}`,
+    });
     res.redirect(
       `${clientUrl}/login?accesstoken=${accessToken}&refreshtoken=${refreshToken}`
     );
